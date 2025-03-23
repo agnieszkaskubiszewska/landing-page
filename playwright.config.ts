@@ -2,6 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
+  timeout: 30000,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -9,8 +10,10 @@ export default defineConfig({
   reporter: 'html',
   use: {
     baseURL: 'https://nordvpn.com',
-    trace: 'on-first-retry',
+    viewport: { width: 1920, height: 1080 },
     screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+    trace: 'retain-on-failure',
     navigationTimeout: 30000,
     actionTimeout: 15000,
   },
