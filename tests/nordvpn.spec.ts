@@ -164,6 +164,10 @@ test.describe('NordVPN Navigation Tests', () => {
       }
     });
 
+    // Check if URL changes to payment page
+    await expect(page).toHaveURL(/.*\/payment.*/);
+    await expect(page.locator('[data-testid="CardTitle-title"]').first()).toHaveText(/Ultra/);
+
     // Finally return to pricing page
     await page.goto('https://nordvpn.com/pricing/');
   });
