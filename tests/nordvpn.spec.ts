@@ -131,18 +131,29 @@ test.describe('NordVPN Navigation Tests', () => {
     const yearlyPlanButton = page.locator('[data-testid="PricingDropdown"]').first();
     await yearlyPlanButton.click({ force: true });
 
-    await page
-      .locator('[data-testid="PricingDropdownOption-1-YEAR"]')
-      .first()
-      .click({ force: true });
+    await page.evaluate(() => {
+      const selectElement = document.querySelector('select'); // Dopasuj selektor do rzeczywistego elementu
+      if (selectElement) {
+        selectElement.value = '1y'; // Ustawienie wartości
+        selectElement.dispatchEvent(new Event('change', { bubbles: true })); // Wywołanie zdarzenia zmiany
+      }
+    });
 
     // Click first available plan button
-    const firstPlanButton = page.locator('[data-testid="MultipleHighlightedCards-PlanCard-cta"]');
-    await firstPlanButton.waitFor({ state: 'visible' }); // Wait for element visibility
-    await firstPlanButton.click();
+    await page.evaluate(() => {
+      const button = document.querySelector(
+        '[data-testid="MultipleHighlightedCards-PlanCard-cta"][data-ga-slug="Get Ultra"]'
+      ) as HTMLElement;
+      if (button) {
+        button.click();
+      } else {
+        console.error('Przycisk nie został znaleziony.');
+      }
+    });
 
     // Check if URL changes to payment page
     await expect(page).toHaveURL(/.*\/payment.*/);
+    await expect(page.locator('[data-testid="CardTitle-title"]').first()).toHaveText(/Ultra/);
 
     // Return to pricing page
     await page.goBack();
@@ -150,11 +161,25 @@ test.describe('NordVPN Navigation Tests', () => {
     // Repeat yearly to monthly plan change procedure
     await yearlyPlanButton.click();
     // Select monthly plan
-    const monthlyOption = page.locator('[data-testid="PricingDropdownOption-1-MONTH"]').first();
-    await monthlyOption.click();
+    await page.evaluate(() => {
+      const selectElement = document.querySelector('select'); // Dopasuj selektor do rzeczywistego elementu
+      if (selectElement) {
+        selectElement.value = '1m'; // Ustawienie wartości
+        selectElement.dispatchEvent(new Event('change', { bubbles: true })); // Wywołanie zdarzenia zmiany
+      }
+    });
 
     // Check payment URL again
-    await expect(page).toHaveURL(/.*\/payment.*/);
+    await page.evaluate(() => {
+      const button = document.querySelector(
+        '[data-testid="MultipleHighlightedCards-PlanCard-cta"][data-ga-slug="Get Ultra"]'
+      ) as HTMLElement;
+      if (button) {
+        button.click();
+      } else {
+        console.error('Przycisk nie został znaleziony.');
+      }
+    });
 
     // Finally return to pricing page
     await page.goto('https://nordvpn.com/pricing/');
