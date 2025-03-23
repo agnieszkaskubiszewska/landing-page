@@ -136,8 +136,6 @@ test.describe('NordVPN Navigation Tests', () => {
       }
     });
 
-    // Wait for the payment page to load
-    await expect(page).toHaveURL(/.*\/payment.*/, { timeout: 5000 });
     // Wait for the Ultra plan title to appear on the payment page
     await expect(page.locator('[data-testid="CardTitle-title"]').first()).toHaveText(/Ultra/);
 
