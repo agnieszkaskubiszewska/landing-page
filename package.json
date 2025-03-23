@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "@playwright/test": "^1.42.1",
+    "@playwright/test": "^1.38.1",
     "@types/node": "^20.11.24",
     "@typescript-eslint/parser": "^5.0.0",
     "eslint": "^8.57.0",
@@ -12,7 +12,7 @@
   "scripts": {
     "test": "npx playwright test",
     "test:ui": "npx playwright test --ui",
-"test:headed": "npx playwright test --headed",
+    "test:headed": "npx playwright test --headed --project=chromium",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write \"**/*.{ts,js,json}\""
   }
