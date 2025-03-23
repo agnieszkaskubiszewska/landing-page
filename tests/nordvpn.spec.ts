@@ -123,8 +123,7 @@ test.describe('NordVPN Navigation Tests', () => {
     }
   });
 
-  /* eslint-disable-next-line playwright/no-skipped-test */
-  test.skip('can switch plan from yearly to monthly', async ({ page }) => {
+  test('can switch plan from yearly to monthly', async ({ page }) => {
     // Navigate to pricing page
     await page.goto('https://nordvpn.com/pricing/');
 
@@ -132,15 +131,10 @@ test.describe('NordVPN Navigation Tests', () => {
     const yearlyPlanButton = page.locator('[data-testid="PricingDropdown"]').first();
     await yearlyPlanButton.click({ force: true });
 
-    // Wait for "1-year plans" option to be visible and scroll if needed
-    const yearlyOption = page.locator('[data-testid="PricingDropdownOption-1-YEAR"]').first();
-    await yearlyOption.waitFor({ state: 'visible' });
-
-    await yearlyOption.click();
-
-    // Select monthly plan
-    const monthlyOption = page.locator('[data-testid="PricingDropdownOption-1-MONTH"]').first();
-    await monthlyOption.click();
+    await page
+      .locator('[data-testid="PricingDropdownOption-1-YEAR"]')
+      .first()
+      .click({ force: true });
 
     // Click first available plan button
     const firstPlanButton = page.locator('[data-testid="MultipleHighlightedCards-PlanCard-cta"]');
@@ -155,8 +149,9 @@ test.describe('NordVPN Navigation Tests', () => {
 
     // Repeat yearly to monthly plan change procedure
     await yearlyPlanButton.click();
-    await yearlyOption.click();
-    await firstPlanButton.click();
+    // Select monthly plan
+    const monthlyOption = page.locator('[data-testid="PricingDropdownOption-1-MONTH"]').first();
+    await monthlyOption.click();
 
     // Check payment URL again
     await expect(page).toHaveURL(/.*\/payment.*/);

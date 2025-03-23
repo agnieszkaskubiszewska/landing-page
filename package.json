@@ -12,7 +12,7 @@
   "scripts": {
     "test": "npx playwright test",
     "test:ui": "npx playwright test --ui",
-    "test:headed": "npx playwright test --headed --project=chromium",
+"test:headed": "npx playwright test --headed --project=chromium",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write \"**/*.{ts,js,json}\""
   }
