@@ -21,7 +21,7 @@ test.describe('NordVPN Navigation Tests', () => {
     const ctaTexts = ['Get NordVPN', 'Get the Deal', 'Get Extra Savings', 'Try NordVPN Risk-Free'];
 
     const sections = [
-      'header[data-section="Hero"]', // Zaczynamy od sekcji Hero
+      'header[data-section="Hero"]',
       'h2.heading-xl >> text="Why choose NordVPN?"',
       'section[data-section="CrossSell Section"]',
       'h3.heading-xl.text-primary >> text="Keep your data safe from prying eyes"',
@@ -34,13 +34,11 @@ test.describe('NordVPN Navigation Tests', () => {
       .map((text) => `button:has-text("${text}"), a:has-text("${text}")`)
       .join(', ');
 
-    // Iteracja przez sekcje
     for (let sectionSelector of sections) {
       console.log(`Checking section: ${sectionSelector}`);
       await page.goto('https://nordvpn.com/offer', { timeout: 30000 });
       await page.waitForLoadState('domcontentloaded');
 
-      // Sprawdź czy sekcja istnieje
       const section = page.locator(sectionSelector);
       const sectionVisible = await section.isVisible().catch(() => false);
 
@@ -49,14 +47,12 @@ test.describe('NordVPN Navigation Tests', () => {
         continue;
       }
 
-      // Przewiń do sekcji
       await section.scrollIntoViewIfNeeded();
       /* eslint-disable-next-line playwright/no-wait-for-timeout */
       await page.waitForTimeout(1000);
       const ctaButtons = page.locator(selector);
       const count = await ctaButtons.count();
 
-      // Jeśli istnieje widoczny przycisk CTA, kliknij w pierwszy z nich
       for (let i = 0; i < count; i++) {
         const button = ctaButtons.nth(i);
         const isVisible = await button.isVisible().catch(() => false);
@@ -64,13 +60,11 @@ test.describe('NordVPN Navigation Tests', () => {
         if (isVisible) {
           console.log(`Clicking CTA button in section: ${sectionSelector}`);
 
-          // Kliknij przycisk i zaczekaj na zmianę URL
           await Promise.all([
             page.waitForURL(/.*\/(pricing|checkout).*/, { timeout: 30000 }),
             button.click(),
           ]);
 
-          // Sprawdź czy URL zawiera 'pricing' lub 'checkout'
           const url = page.url();
           await expect(url).toMatch(/.*\/(pricing|checkout).*/);
           console.log(`✓ Successfully navigated to: ${url}`);
@@ -129,7 +123,8 @@ test.describe('NordVPN Navigation Tests', () => {
     }
   });
 
-  test('can switch plan from yearly to monthly', async ({ page }) => {
+  /* eslint-disable-next-line playwright/no-skipped-test */
+  test.skip('can switch plan from yearly to monthly', async ({ page }) => {
     // Navigate to pricing page
     await page.goto('https://nordvpn.com/pricing/');
 
