@@ -35,7 +35,6 @@ test.describe('NordVPN Navigation Tests', () => {
       .join(', ');
 
     for (let sectionSelector of sections) {
-      console.log(`Checking section: ${sectionSelector}`);
       await page.goto('https://nordvpn.com/offer', { timeout: 30000 });
       await page.waitForLoadState('domcontentloaded');
 
@@ -43,7 +42,6 @@ test.describe('NordVPN Navigation Tests', () => {
       const sectionVisible = await section.isVisible().catch(() => false);
 
       if (!sectionVisible) {
-        console.log(`Section not found: ${sectionSelector}`);
         continue;
       }
 
@@ -58,8 +56,6 @@ test.describe('NordVPN Navigation Tests', () => {
         const isVisible = await button.isVisible().catch(() => false);
 
         if (isVisible) {
-          console.log(`Clicking CTA button in section: ${sectionSelector}`);
-
           await Promise.all([
             page.waitForURL(/.*\/(pricing|checkout).*/, { timeout: 30000 }),
             button.click(),
@@ -67,9 +63,6 @@ test.describe('NordVPN Navigation Tests', () => {
 
           const url = page.url();
           await expect(url).toMatch(/.*\/(pricing|checkout).*/);
-          console.log(`✓ Successfully navigated to: ${url}`);
-
-          // Po udanym teście dla tej sekcji przejdź do następnej
           break;
         }
       }
@@ -102,8 +95,6 @@ test.describe('NordVPN Navigation Tests', () => {
       const expectedPlan = Object.keys(plans).find((plan) => buttonText.includes(plan)) as PlanKey;
       if (!expectedPlan) continue;
 
-      console.log(`Clicking plan: ${expectedPlan}`);
-
       await button.click(); // Click button
       await page.waitForLoadState('domcontentloaded');
 
@@ -113,10 +104,6 @@ test.describe('NordVPN Navigation Tests', () => {
       // Check if correct plan name appears on payment page
       const planTitle = page.locator('[data-testid="CardTitle-title"]');
       await expect(planTitle).toHaveText(plans[expectedPlan]);
-
-      console.log(
-        `✅ After clicking "${expectedPlan}", payment page shows: "${plans[expectedPlan]}"`
-      );
 
       // Return to pricing page before next iteration
       await page.goto('https://nordvpn.com/offer/pricing/');
@@ -132,10 +119,10 @@ test.describe('NordVPN Navigation Tests', () => {
     await yearlyPlanButton.click({ force: true });
 
     await page.evaluate(() => {
-      const selectElement = document.querySelector('select'); // Dopasuj selektor do rzeczywistego elementu
+      const selectElement = document.querySelector('select');
       if (selectElement) {
-        selectElement.value = '1y'; // Ustawienie wartości
-        selectElement.dispatchEvent(new Event('change', { bubbles: true })); // Wywołanie zdarzenia zmiany
+        selectElement.value = '1y';
+        selectElement.dispatchEvent(new Event('change', { bubbles: true }));
       }
     });
 
@@ -146,8 +133,6 @@ test.describe('NordVPN Navigation Tests', () => {
       ) as HTMLElement;
       if (button) {
         button.click();
-      } else {
-        console.error('Przycisk nie został znaleziony.');
       }
     });
 
@@ -162,10 +147,10 @@ test.describe('NordVPN Navigation Tests', () => {
     await yearlyPlanButton.click();
     // Select monthly plan
     await page.evaluate(() => {
-      const selectElement = document.querySelector('select'); // Dopasuj selektor do rzeczywistego elementu
+      const selectElement = document.querySelector('select');
       if (selectElement) {
-        selectElement.value = '1m'; // Ustawienie wartości
-        selectElement.dispatchEvent(new Event('change', { bubbles: true })); // Wywołanie zdarzenia zmiany
+        selectElement.value = '1m';
+        selectElement.dispatchEvent(new Event('change', { bubbles: true }));
       }
     });
 
@@ -176,8 +161,6 @@ test.describe('NordVPN Navigation Tests', () => {
       ) as HTMLElement;
       if (button) {
         button.click();
-      } else {
-        console.error('Przycisk nie został znaleziony.');
       }
     });
 

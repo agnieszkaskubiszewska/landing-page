@@ -10,7 +10,7 @@
     "prettier": "^3.5.3"
   },
   "scripts": {
-    "test": "npx playwright test",
+"test": "npx playwright test",
     "test:ui": "npx playwright test --ui",
 "test:headed": "npx playwright test --headed --project=chromium",
     "lint": "eslint . --ext .ts",
