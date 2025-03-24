@@ -19,19 +19,19 @@ export async function acceptCookiesIfPresent(page: Page): Promise<void> {
  */
 export async function navigateAndPrepare(page: Page, url: string): Promise<void> {
   try {
-    // Użyj dłuższego timeoutu i nie czekaj na pełne załadowanie strony
+    // Use a longer timeout and don't wait for the full page load
     await page.goto(url, {
       timeout: 60000,
-      waitUntil: 'domcontentloaded', // Zamiast 'load' - szybciej
+      waitUntil: 'domcontentloaded', // Instead of 'load' - faster
     });
 
-    // Czekaj na pojawienie się konkretnego elementu jako wskaźnik, że strona jest użyteczna
+    // Wait for a specific element as an indicator that the page is usable
     await page.waitForSelector('body', { timeout: 10000 });
 
     await acceptCookiesIfPresent(page);
   } catch (error) {
-    console.log(`Nawigacja do ${url} nie powiodła się: ${error}`);
-    // Kontynuuj mimo błędu - testy same obsłużą dalszą logikę
+    console.log(`Navigation to ${url} failed: ${error}`);
+    // Continue despite error - tests will handle further logic themselves
   }
 }
 
