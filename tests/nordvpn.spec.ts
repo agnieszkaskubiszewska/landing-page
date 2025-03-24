@@ -100,7 +100,7 @@ test.describe('NordVPN Navigation Tests', () => {
     // Navigate to pricing page
     await navigateAndPrepare(page, 'https://nordvpn.com/pricing/');
 
-    // Funkcja pomocnicza do wyboru okresu planu
+    // Helper function for selecting plan period
     async function selectPlanPeriod(period: '1y' | '1m'): Promise<void> {
       const yearlyPlanButton = page.locator('[data-testid="PricingDropdown"]').first();
       await yearlyPlanButton.click({ force: true });
@@ -114,7 +114,7 @@ test.describe('NordVPN Navigation Tests', () => {
       }, period);
     }
 
-    // Funkcja pomocnicza do kliknięcia przycisku planu
+    // Helper function for clicking plan button
     async function clickPlanButton(planSlug: string): Promise<void> {
       await page.evaluate((slug) => {
         const button = document.querySelector(
@@ -126,24 +126,24 @@ test.describe('NordVPN Navigation Tests', () => {
       }, planSlug);
     }
 
-    // Test dla planu rocznego
+    // Test for yearly plan
     await selectPlanPeriod('1y');
     await clickPlanButton('Get Plus');
 
     await expect(page).toHaveURL(/.*\/payment.*/);
     await expect(page.locator('[data-testid="CardTitle-title"]').first()).toHaveText(/Plus/);
 
-    // Powrót do strony cenowej
+    // Return to pricing page
     await page.goBack();
 
-    // Test dla planu miesięcznego
+    // Test for monthly plan
     await selectPlanPeriod('1m');
     await clickPlanButton('Get Plus');
 
     await expect(page).toHaveURL(/.*\/payment.*/);
     await expect(page.locator('[data-testid="CardTitle-title"]').first()).toHaveText(/Plus/);
 
-    // Finalny powrót do strony cenowej
+    // Final return to pricing page
     await navigateAndPrepare(page, 'https://nordvpn.com/pricing/');
   });
 
