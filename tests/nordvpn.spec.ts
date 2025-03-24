@@ -126,10 +126,10 @@ test.describe('NordVPN Navigation Tests', () => {
       }
     });
 
-    // Click first available plan button
+    // Click  plan button
     await page.evaluate(() => {
       const button = document.querySelector(
-        '[data-testid="MultipleHighlightedCards-PlanCard-cta"][data-ga-slug="Get Ultra"]'
+        '[data-testid="MultipleHighlightedCards-PlanCard-cta"][data-ga-slug="Get Plus"]'
       ) as HTMLElement;
       if (button) {
         button.click();
@@ -137,7 +137,8 @@ test.describe('NordVPN Navigation Tests', () => {
     });
 
     // Wait for the Ultra plan title to appear on the payment page
-    await expect(page.locator('[data-testid="CardTitle-title"]').first()).toHaveText(/Ultra/);
+    await expect(page).toHaveURL(/.*\/payment.*/);
+    await expect(page.locator('[data-testid="CardTitle-title"]').first()).toHaveText(/Plus/);
 
     // Return to pricing page
     await page.goBack();
@@ -156,7 +157,7 @@ test.describe('NordVPN Navigation Tests', () => {
     // Check payment URL again
     await page.evaluate(() => {
       const button = document.querySelector(
-        '[data-testid="MultipleHighlightedCards-PlanCard-cta"][data-ga-slug="Get Ultra"]'
+        '[data-testid="MultipleHighlightedCards-PlanCard-cta"][data-ga-slug="Get Plus"]'
       ) as HTMLElement;
       if (button) {
         button.click();
@@ -165,7 +166,7 @@ test.describe('NordVPN Navigation Tests', () => {
 
     // Check if URL changes to payment page
     await expect(page).toHaveURL(/.*\/payment.*/);
-    await expect(page.locator('[data-testid="CardTitle-title"]').first()).toHaveText(/Ultra/);
+    await expect(page.locator('[data-testid="CardTitle-title"]').first()).toHaveText(/Plus/);
 
     // Finally return to pricing page
     await page.goto('https://nordvpn.com/pricing/');
