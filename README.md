@@ -55,16 +55,15 @@ This project contains automated UI tests for the NordVPN landing page using the 
 
 ## Project Structure  
 
-```
 landing-page/  
 ├── tests/                # Automated tests  
+│   ├── helpers.ts        # Helper functions for tests  
 │   └── nordvpn.spec.ts   # Test scenarios for NordVPN  
 ├── playwright.config.ts  # Playwright configuration  
 ├── .eslintrc.js          # ESLint configuration  
 ├── .prettierrc.js        # Prettier configuration  
 ├── .github/workflows/    # GitHub Actions configuration  
 └── package.json         # Dependencies and scripts  
-```
 
 ## Continuous Integration  
 
